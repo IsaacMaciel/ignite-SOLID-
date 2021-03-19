@@ -1,23 +1,41 @@
 {
   "openapi": "3.0.0",
+  "info": {
+    "title": "Atlas",
+    "description": "This is a documentation about Atlas API",
+    "version": "1.0.0",
+    "contact": {
+      "email": "isaac_maciel@hotmail.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "User",
+      "description": "Users management"
+    }
+  ],
   "paths": {
     "/users": {
       "get": {
-        "tags": ["Users"],
+        "tags": ["User"],
         "summary": "Return a list of users",
         "description": "Return a list of user if admin",
-        "headers": {
-          "user_id": {
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "header",
+            "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "Sucess",
             "content": {
-              "aplication/json": {
+              "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -30,7 +48,7 @@
           "400": {
             "description": "User is not admin",
             "content": {
-              "aplication/json": {
+              "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -46,12 +64,12 @@
         }
       },
       "post": {
-        "tags": ["Users"],
+        "tags": ["User"],
         "summary": "Create a user",
         "description": "Create a new user",
         "requestBody": {
           "content": {
-            "aplication/json": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -64,7 +82,7 @@
                 },
                 "example": {
                   "name": "Isaac Araujo",
-                  "description": "isaac.araujo@example.com"
+                  "email": "isaac.araujo@example.com"
                 }
               }
             }
@@ -74,17 +92,17 @@
           "201": {
             "description": "Created",
             "content": {
-              "aplication/json": {
+              "application/json": {
                 "schema": {
-                    "$ref": "#/components/schemas/User"
+                  "$ref": "#/components/schemas/User"
                 }
               }
             }
           },
-          "500": {
+          "400": {
             "description": "Email already exist",
             "content": {
-              "aplication/json": {
+              "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -102,7 +120,7 @@
     },
     "/users/{user_id}/admin": {
       "patch": {
-        "tags": ["Users"],
+        "tags": ["User"],
         "summary": "Turn an user in admin by user_id",
         "description": "Return an user",
         "operationId": "turnUseAdminById",
@@ -110,6 +128,7 @@
           {
             "name": "user_id",
             "description": " ID of User",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string",
@@ -121,7 +140,7 @@
           "200": {
             "description": "Sucess",
             "content": {
-              "aplication/json": {
+              "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -157,7 +176,7 @@
           "404": {
             "description": "User not found",
             "content": {
-              "aplication/json": {
+              "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -175,14 +194,17 @@
     },
     "/users/{user_id}": {
       "get": {
-        "tags": ["Users"],
+        "tags": ["User"],
         "summary": "Return un user by id",
         "parameters": [
           {
             "name": "user_id",
+            "description": "User ID",
+            "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -190,7 +212,7 @@
           "200": {
             "description": "Sucess",
             "content": {
-              "aplication/json": {
+              "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -226,7 +248,7 @@
           "404": {
             "description": "User not found",
             "content": {
-              "aplication/json": {
+              "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
